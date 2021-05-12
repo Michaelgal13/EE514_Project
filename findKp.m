@@ -49,13 +49,28 @@ plot(timeOut(1201:2801), Vp(1201:2801));
 Kpave = (Kp1+Kp2)/2;
 Kpavep = (Kp1p+Kp2p)/2;
 
-rad2 = (timeOut - 0.7) * 10.8051338;
-x = linspace(-2, 5);
-y = 4.8409*x - 10.557;
+timeRad2 = timeOut(897:3225);
+VpRad2 = Vp(897:3225);
+
+radRad2 = (timeRad2-0.024) .* (2*pi/tRev);
+x = linspace(0,7);
+y = Kp2p*x + (1.4485-17);
+
+B1 = radRad2\VpRad2;
+
+xb1 =  linspace(0,7);
+yb1 = B1*x;
 figure
 hold on
-plot(rad2, Vp);
-line(x,y, 'Color', 'red');
+plot(radRad2, VpRad2);
+line(x,y, 'Color', 'black', 'LineStyle', '--');
+xlabel('Radians');
+ylabel('Vp');
+legend('Data', 'Calculated Kp','Location', 'North West');
+im = [.2 .5 .3 .3];
+str = 'y = Kp*x-';
+annotation('textbox',dim,'String',str,'FitBoxToText','on');
+
 hold off
 
 %%
