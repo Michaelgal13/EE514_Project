@@ -359,6 +359,8 @@ end
 
 horVals = 1:13;
 vertVals = [tm1, tm2, tm3, tm4, tm5, tm6, tm7, tm8, tm9, tmA, tmB, tmC, tmD];
+avCalc = mean(vertVals);
+vertVals = (vertVals./avCalc).*0.274;
 
 %plot(horVals,vertVals);
 
@@ -371,11 +373,12 @@ for i = size(horNorm,2) : -1: 1
     horNorm(i) = sum(horNorm(1:i));
 end
 figure
-plot(horNorm, vertVals);
+plot(horNorm - pi, vertVals);
 title("tau m");
 figure
 hold on
-plot(horNorm, vertVals);
+plot(horNorm - pi, vertVals);
+
 %225 step time steps
 p1 = polyfit(horNorm, vertVals, 1);
 p2 = polyfit(horNorm, vertVals, 2);
@@ -387,32 +390,34 @@ p7 = polyfit(horNorm, vertVals, 7);
 p8 = polyfit(horNorm, vertVals, 8);
 p9 = polyfit(horNorm, vertVals, 9);
 pA = polyfit(horNorm, vertVals, 10);
-
-y1 = polyval(p1, horNorm);
-y2 = polyval(p2, horNorm);
-y3 = polyval(p3, horNorm);
-y4 = polyval(p4, horNorm);
-y5 = polyval(p5, horNorm);
-y6 = polyval(p6, horNorm);
-y7 = polyval(p7, horNorm);
-y8 = polyval(p8, horNorm);
-y9 = polyval(p9, horNorm);
-yA = polyval(pA, horNorm);
-
-
-
-plot(horNorm,y1);
-plot(horNorm,y2);
-plot(horNorm,y3);
-plot(horNorm,y4);
-plot(horNorm,y5);
-plot(horNorm,y6);
-plot(horNorm,y7);
-plot(horNorm,y8);
-plot(horNorm,y9);
-plot(horNorm,yA);
-title("tau m");
-legend("Stepwise", "Polyfit 1", "Polyfit 2", "Polyfit 3", "Polyfit 4", "Polyfit 5", "Polyfit 6", "Polyfit 7", "Polyfit 8", "Polyfit 9", "Polyfit 10")
+xvalues = linspace(0.47, 2*pi, 1000);
+y1 = polyval(p1, xvalues);
+y2 = polyval(p2, xvalues);
+y3 = polyval(p3, xvalues);
+y4 = polyval(p4, xvalues);
+y5 = polyval(p5, xvalues);
+y6 = polyval(p6, xvalues);
+y7 = polyval(p7, xvalues);
+y8 = polyval(p8, xvalues);
+y9 = polyval(p9, xvalues);
+yA = polyval(pA, xvalues);
 
 
+
+%plot(xvalues,y1);
+%plot(xvalues,y2);
+%plot(xvalues,y3);
+%plot(xvalues,y4);
+%plot(xvalues,y5);
+%plot(xvalues,y6);
+%plot(xvalues,y7);
+%plot(xvalues,y8);
+%plot(xvalues,y9);
+plot(xvalues - pi,yA);
+title('$\tau_m$','Interpreter','Latex','FontSize',12);
+legend("Stepwise", "Polyfit 10", "Polyfit 2", "Polyfit 3", "Polyfit 4", "Polyfit 5", "Polyfit 6", "Polyfit 7", "Polyfit 8", "Polyfit 9", "Polyfit 10")
+xlim([-pi pi]);
+
+xlabel("Radians");
+ylabel("Time (s)");
 hold off

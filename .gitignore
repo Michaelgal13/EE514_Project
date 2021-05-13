@@ -36,5 +36,6 @@ codegen/
 octave-workspace
 
 *.gif
+*.png
 
 # End of https://www.toptal.com/developers/gitignore/api/matlab
