@@ -35,7 +35,7 @@ codegen/
 # Octave session info
 octave-workspace
 
+*.gif
+*.png
+
 # End of https://www.toptal.com/developers/gitignore/api/matlab
-goodcontroleffort.png
-taum.png
-fastcontroleffort.png
