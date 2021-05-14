@@ -36,3 +36,6 @@ codegen/
 octave-workspace
 
 # End of https://www.toptal.com/developers/gitignore/api/matlab
+goodcontroleffort.png
+taum.png
+fastcontroleffort.png
