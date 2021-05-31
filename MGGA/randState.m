@@ -1,9 +1,9 @@
 function endNode = randState(opts)
 %checks for options
 if isempty(opts) || (size(opts,2) < 2)
-    StatexSeed = 0.25;
-    StatexdotSeed = 0.25;
-    StatethetaSeed = 0.25;
+statexSeed = 0;
+StatexdotSeed = 0;
+    StatethetaSeed = 0.5;
 else
     %All state seeds should sum up to less than 1. StatexSeed should be the
     %odds of an x appearing. StatexdotSeed is the odds of an sdot
@@ -11,14 +11,14 @@ else
     %1 - all of those probabilities is the odds of theta dot. 
     a = find(opts(:) == "StatexSeed");
     if isempty(a)
-        StatexSeed = 0.25;
+        StatexSeed = 0;
     else
         StatexSeed = opts(a(1)+1);
         StatexSeed = str2double(StatexSeed);
     end
     a = find(opts(:) == "StatexdotSeed");
     if isempty(a)
-        StatexdotSeed = 0.25;
+        StatexdotSeed = 0;
     else
         StatexdotSeed = opts(a(1)+1);
         StatexdotSeed = str2double(StatexdotSeed);
@@ -35,13 +35,10 @@ end
 %generates a single random number between 0 and 1
 b = rand;
 %chooses a state variable to add
-if b < StatexSeed
-    endNode = 'x';
-elseif b < StatexSeed + StatexdotSeed
-    endNode = 'xdot';
-elseif b < StatexSeed + StatexdotSeed + StatethetaSeed
+
+if b < StatethetaSeed
     endNode = 'theta';
 else
-    endNode = 'thetadot';
+    endNode = 'theta_dot';
 end
 end

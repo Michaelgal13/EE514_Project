@@ -1,8 +1,8 @@
-function cost = costFunction(simOut)
+function cost = costClay(simOut)
 
-t = simOut.tout;
-X = simOut.X;
-ctrleff = simOut.ctrl_eff;
+t = simOut.xk.time;
+X = simOut.xk.data;
+ctrleff = simOut.xu.data;
 totCtrl = trapz(t,ctrleff);
 totX=trapz(t, X(:,1));
 totXdot = trapz(t,X(:,2));

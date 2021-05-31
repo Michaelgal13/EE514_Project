@@ -48,7 +48,7 @@ if  maxVal > maxRec
         fileID = fopen(strcat(fullStrName),'w+');
     end
     %writes function name
-    stringName = strcat("function k = ", strName, "(x, xdot, theta, thetadot)");
+    stringName = strcat("function k = ", strName, "(theta, theta_dot)");
     fprintf(fileID, stringName);
     while maxVal > maxRec
         %disp(B);
@@ -134,7 +134,7 @@ else
         fileID = fopen(strcat(fullStrName),'w+');
     end
     %writes function name
-    stringName = strcat("function k = ", strName, "(x, xdot, theta, thetadot)");
+    stringName = strcat("function k = ", strName, "(theta, theta_dot)");
     %writes function code
     fprintf(fileID, stringName);
     fprintf(fileID, "\nk = ");
