@@ -21,10 +21,12 @@ physParam = [m, L, g, vmo, N];
 %The next line will define the intial condition of the pendulum
 th_init = deg2rad(110);
 %%
-simulinkModel = "motomatic_pendGA.slx";
+simulinkModel = "Master.slx";
 simTime = 5;
 simFunct = "simFunctGA";
-generations = 20;
+costFunction = 'costClay';
+% costFunction = 'costFunction';
+generations = 10;
 population = 10;
 initDepth = 5;
 opts = ["MaxSize", 30, "MutationLoops", 2, "MutationDepth", 8,...
@@ -45,7 +47,7 @@ for i = 1:generations
         str = parseTree(treeList(j), simFunct);
         try
         simOut = sim(simulinkModel, simTime);
-        treeRes(j) = costFunction(simOut);
+        treeRes(j) = feval(costFunction, simOut);
         catch
         fprintf("ERROR: Setting cost to inf\n");
         treeRes(j) = inf;
@@ -63,11 +65,16 @@ result = treeList(I);
 %%
 parseTree(result, simFunct);
 simOut = sim(simulinkModel, simTime);
-cost = costFunction(simOut);
+%%
+cost = feval(costFunction, simOut);
+
+t = simOut.xk.time;
+X = simOut.xk.data;
+ctrleff = simOut.xu.data;
 
 figure
 hold on
-plot(simOut.tout, simOut.ctrl_eff);
-plot(simOut.tout, simOut.X(:,1));
-plot(simOut.tout, simOut.X(:,2));
+plot(t, ctrleff);
+plot(t, X(:,1));
+plot(t, X(:,2));
 hold off
