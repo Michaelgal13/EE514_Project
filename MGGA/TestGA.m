@@ -158,4 +158,4 @@ sgtitle('Genetic Algorithm Results','interpreter','latex');
 
 
 %%
-save('bestTest', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
+save('bestTest2', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
