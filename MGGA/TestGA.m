@@ -38,9 +38,9 @@ if loadOld == 1
     loaded = load(loadingTest);
     treeList = loaded.treeList;
 else
-for i = 1: population
-    treeList(i) = genTree(initDepth, opts);
-end
+    for i = 1: population
+        treeList(i) = genTree(initDepth, opts);
+    end
 end
 
 for i = 1:generations
@@ -76,6 +76,10 @@ for i = 1:generations
     xlim([1 generations]);
     xlabel("Generations");
     ylabel("Minimum Cost");
+    [~,I] = min(treeRes);
+    result = treeList(I);
+    parseTree(result, simFunct);
+    simOut = sim(simulinkModel, t);
     figure(101)
     subplot(2,2,1)
     % plot (t,simOut.xnew.Data(:,1)')
@@ -183,4 +187,4 @@ sgtitle('Genetic Algorithm Results','interpreter','latex');
 
 
 %%
-save('midTest', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
+save('midTest', 'treeList', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
