@@ -19,7 +19,7 @@ physParam = [m, L, g, vmo, N];
 %The next line will define the intial condition of the pendulum
 th_init = deg2rad(110);
 %%
-simulinkModel = "motomatic_pendGA";
+simulinkModel = "motomatic_pend_V2_GA";
 t = 10;
 simFunct = "simFunctGA";
 costFunction = "costFunction";
@@ -32,9 +32,15 @@ opts = ["MaxSize", 40, "MutationLoops", 2, "MutationDepth", 8,...
     "StatexSeed", 0.25, "StatexdotSeed", 0.25, "StatethetaSeed", 0.25,...
     "ElitismNumber", 1, "CrossoverNumber", floor(population/2), "ReplicationNumber", 1];
 endCond = 1;
-
+loadOld = 1;
+loadingTest = "bestTest.mat";
+if loadOld == 1
+    loaded = load(loadingTest);
+    treeList = loaded.treeList;
+else
 for i = 1: population
     treeList(i) = genTree(initDepth, opts);
+end
 end
 
 for i = 1:generations
@@ -59,15 +65,33 @@ for i = 1:generations
         stop(timre);
         delete(timre);
         if err ~= 0
+            fprintf("TIMEOUT\n");
             treeRes(j) = inf;
         end
         fprintf("Currently: %d out of %d at %s\n", (i-1)*population + j, (generations)*population, datestr(now,'HH:MM:SS.FFF'));
     end
     genRes(i) = min(treeRes);
+    figure(202)
     plot(1:i,genRes);
     xlim([1 generations]);
     xlabel("Generations");
     ylabel("Minimum Cost");
+    figure(101)
+    subplot(2,2,1)
+    % plot (t,simOut.xnew.Data(:,1)')
+    plot (simOut.tout,simOut.X(:,1)')
+    xlabel ('Time')
+    ylabel ('Angle')
+    subplot(2,2,2)
+    % plot (t,simOut.xnew.Data(:,2)')
+    plot (simOut.tout,simOut.X(:,2)')
+    xlabel ('Time')
+    ylabel ('Angular Velocity')
+    subplot(2,2,3)
+    %plot (t,simOut.xnew.Data(:,3)')
+    plot (simOut.tout,simOut.ctrl_eff')
+    xlabel ('Time')
+    ylabel ('Effort')
     drawnow;
     pause(0.01)
     if endCond == 1
@@ -79,6 +103,7 @@ for i = 1:generations
     treeList = evolveGen(treeList, treeRes, opts);
     population = size(treeList,2);
 end
+%%
 [~,I] = min(treeRes);
 result = treeList(I);
 
@@ -158,4 +183,4 @@ sgtitle('Genetic Algorithm Results','interpreter','latex');
 
 
 %%
-save('bestTest2', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
+save('midTest', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
