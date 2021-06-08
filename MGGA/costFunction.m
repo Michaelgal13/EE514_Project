@@ -2,8 +2,8 @@ function cost = costFunction(simOut)
 
 %set State Values to defined Q and R matrices to generate the same results
 %as in the paper
-Q = [10, 0; 0, 0];
-R = 1;
+Q = [10, 0; 0, 1];
+R = 1/100;
 x = [   simOut.X(:,1)';...
         simOut.X(:,2)'];
 
@@ -15,7 +15,12 @@ for i=2:length(t)
     cost =  cost + (x(:,i)'*Q*x(:,i) + u(i)'*R*u(i)).*(t(i)-t(i-1));
 end
 
-l = 1;
+for i = 2: length(t)
+    if abs(u(i)) > 5
+        cost = cost + 1000 * (t(i-1) - t(i));
+        cost = cost + 100* u(i) * (t(i-1) - t(i));
+    end
+end
 % ctrleff = simOut.ctrl_eff;
 % totCtrl = trapz(t,ctrleff);
 % totX=trapz(t, X(:,1));
