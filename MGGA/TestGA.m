@@ -19,6 +19,9 @@ physParam = [m, L, g, vmo, N];
 %The next line will define the intial condition of the pendulum
 th_init = deg2rad(110);
 %%
+loadVal = "bestTest.mat";
+oldTest = load(loadVal);
+treeList = oldTest.treeList;
 simulinkModel = "motomatic_pendGA";
 t = 10;
 simFunct = "simFunctGA";
@@ -32,9 +35,14 @@ opts = ["MaxSize", 40, "MutationLoops", 2, "MutationDepth", 8,...
     "StatexSeed", 0.25, "StatexdotSeed", 0.25, "StatethetaSeed", 0.25,...
     "ElitismNumber", 1, "CrossoverNumber", floor(population/2), "ReplicationNumber", 1];
 endCond = 1;
-
-for i = 1: population
-    treeList(i) = genTree(initDepth, opts);
+newPop = 0;
+if newPop == 1
+    
+    for i = 1: population
+        treeList(i) = genTree(initDepth, opts);
+    end
+else
+    treeList = treeList;
 end
 
 for i = 1:generations
@@ -117,7 +125,7 @@ ylabel ('Effort')
 % ylabel ('Acutator Effort')
 % xlabel ('Time')
 % ylabel ('Magnitude')
-% legend ({'Position', 'Velocity', 'Angle', 'Angular Velocity', 'Actuator Effort'}, 'Location', 'Best') 
+% legend ({'Position', 'Velocity', 'Angle', 'Angular Velocity', 'Actuator Effort'}, 'Location', 'Best')
 sgtitle('Genetic Algorithm Results','interpreter','latex');
 
 %%
@@ -125,7 +133,7 @@ sgtitle('Genetic Algorithm Results','interpreter','latex');
 % simOut = sim("untitled_pi5.slx", t);
 % % simOut = sim(simulinkModel, simTime);
 % y = feval(costFunction, simOut);
-% 
+%
 % figure(201)
 % subplot(2,3,1)
 % % plot (t,simOut.xnew.Data(:,1)')
@@ -152,10 +160,10 @@ sgtitle('Genetic Algorithm Results','interpreter','latex');
 % plot (simOut.tout,simOut.yout)
 % xlabel ('Time')
 % ylabel ('Acutator Effort')
-% 
+%
 % sgtitle('Genetic Algorithm Results at$$\frac{\pi}{4}$$','interpreter','latex');
-% 
+%
 
 
 %%
-save('bestTest2', 'result', 'opts', 'population', 'generations', 'initDepth', 'simulinkModel')
+save('bestTest2', 'result', 'opts', 'treeList', 'population', 'generations', 'initDepth', 'simulinkModel')

@@ -3,7 +3,7 @@ function cost = costFunction(simOut)
 %set State Values to defined Q and R matrices to generate the same results
 %as in the paper
 Q = [10, 0; 0, 0];
-R = 1/10000;
+R = 1;
 x = [   simOut.X(:,1)';...
         simOut.X(:,2)'];
 
